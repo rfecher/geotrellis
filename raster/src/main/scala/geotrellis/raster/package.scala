@@ -73,6 +73,7 @@ package object raster
       with vectorize.VectorizeMethods
 
   implicit class withMultibandTileMethods(val self: MultibandTile) extends MethodExtensions[MultibandTile]
+      with bundle.MultibandTileBundleMethods
       with crop.MultibandTileCropMethods
       with mask.MultibandTileMaskMethods
       with merge.MultibandTileMergeMethods

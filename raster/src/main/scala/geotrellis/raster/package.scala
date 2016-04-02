@@ -24,6 +24,7 @@ import geotrellis.util.MethodExtensions
 
 package object raster
     extends crop.Implicits
+    with bundle.Implicits
     with geotrellis.raster.mapalgebra.focal.hillshade.Implicits
     with mask.Implicits
     with merge.Implicits
@@ -48,6 +49,7 @@ package object raster
       with rasterize.FeatureDoubleRasterizeMethods[Geometry]
 
   implicit class withTileMethods(val self: Tile) extends MethodExtensions[Tile]
+      with bundle.SinglebandTileBundleMethods
       with costdistance.CostDistanceMethods
       with crop.SinglebandTileCropMethods
       with hydrology.HydrologyMethods

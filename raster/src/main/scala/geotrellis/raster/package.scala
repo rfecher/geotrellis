@@ -95,6 +95,7 @@ package object raster
       with resample.MultibandRasterResampleMethods
 
   implicit class withTileSeqMethods(val self: Traversable[Tile]) extends MethodExtensions[Traversable[Tile]]
+      with bundle.TileSeqBundleMethods
       with mapalgebra.local.LocalSeqMethods
 
   implicit class SinglebandRasterAnyRefMethods(val self: SinglebandRaster) extends AnyRef {

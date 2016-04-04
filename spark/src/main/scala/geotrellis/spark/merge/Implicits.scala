@@ -1,6 +1,7 @@
 package geotrellis.spark.merge
 
 import geotrellis.raster._
+import geotrellis.raster.bundle._
 import geotrellis.raster.merge._
 import geotrellis.raster.prototype._
 import geotrellis.spark._
@@ -11,11 +12,18 @@ import org.apache.spark.rdd.RDD
 
 import scala.reflect.ClassTag
 
+
 object Implicits extends Implicits
 
 trait Implicits {
   implicit class withTileRDDMergeMethods[K: ClassTag, V: ClassTag: ? => TileMergeMethods[V]](self: RDD[(K, V)])
     extends TileRDDMergeMethods[K, V](self)
+
+  implicit class withTileFeatureRDDMergeMethods[
+    K: ClassTag,
+    T <: Tile: ClassTag,
+    D: ClassTag: ? => BundleMethods[D]
+  ](self: RDD[(K,TileFeature[T,D])]) extends TileFeatureRDDMergeMethods[K,T,D](self)
 
   implicit class withRDDLayoutMergeMethods[
     K: SpatialComponent: ClassTag,

@@ -20,6 +20,11 @@ import geotrellis.raster._
 import geotrellis.util.MethodExtensions
 
 
+/**
+  * The BundleMethods type.  This forms the basis for a typeclass that
+  * allows conforming types to be treated as base spaces with
+  * sequences of pixels attached at each point.
+  */
 trait BundleMethods[T] extends MethodExtensions[T] {
   def cols: Int
   def rows: Int

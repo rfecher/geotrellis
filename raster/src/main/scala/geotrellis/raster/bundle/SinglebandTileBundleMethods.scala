@@ -19,6 +19,9 @@ package geotrellis.raster.bundle
 import geotrellis.raster._
 
 
+/**
+  * Bundle methods for (Singleband) Tiles.
+  */
 trait SinglebandTileBundleMethods extends BundleMethods[Tile] {
 
   def cols = self.cols
@@ -28,6 +31,19 @@ trait SinglebandTileBundleMethods extends BundleMethods[Tile] {
   def fiber(col: Int, row: Int): Seq[Int] =
     List(self.get(col, row))
 
+  /**
+    * A method to mix the present Singleband Tile with another object
+    * that is a member of the BundleMethods type class.
+    *
+    * The function argument is a function from (Int, Int, Seq[Int],
+    * Seq[Int]) to Seq[Int], where the first two arguments to it are
+    * the column and row, the last two arguments are the fibers at
+    * that position in this tile and the other "thing", and output is
+    * a new fiber.
+    *
+    * @param  other  The other "thing", a member of the BundleMethods type class
+    * @param  fn     The mixing function
+    */
   def mix[D: ? => BundleMethods[D]](other: D, fn: (Int, Int, Seq[Int], Seq[Int]) => Seq[Int]): Tile = {
     require(cols == other.cols && rows == other.rows, "Dimensions must match")
 

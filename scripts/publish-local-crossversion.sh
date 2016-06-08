@@ -10,6 +10,8 @@
 ./sbt "project accumulo" +publish-local && \
 ./sbt "project cassandra" +publish-local && \
 ./sbt "project spark-etl" +publish-local && \
+./sbt "project geotools" +publish-local && \
+./sbt "project geowave" +publish-local && \
 ./sbt "project shapefile" +publish-local && \
 ./sbt "project slick" +publish-local && \
 ./sbt "project util" +publish-local && \

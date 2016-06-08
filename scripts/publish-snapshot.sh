@@ -9,6 +9,8 @@
       "project s3" publish \
       "project accumulo" publish \
       "project cassandra" publish \
+      "project geotools" publish \
+      "project geowave" publish \
       "project shapefile" publish \
       "project util" publish \
       "project raster-testkit" publish \

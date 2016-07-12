@@ -80,9 +80,7 @@ object GeowaveAttributeStore {
     list
   }
 
-  def primaryIndex = (new SpatialDimensionalityTypeProvider.SpatialIndexBuilder)
-    .setAllTiers(true)
-    .createIndex()
+  def primaryIndex = (new SpatialDimensionalityTypeProvider.SpatialIndexBuilder).createIndex()
 
   def subStrategies(idx: PrimaryIndex) = idx
     .getIndexStrategy

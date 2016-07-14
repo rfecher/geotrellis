@@ -105,6 +105,11 @@ object GeowaveLayerWriter extends LazyLogging {
         /* Write the mosaic into GeoWave */
         indexWriter.write(image)
         indexWriter.close
+
+        import org.geotools.gce.geotiff._
+        import org.opengis.parameter.GeneralParameterValue
+        val writer = new GeoTiffWriter(new java.io.File(s"/tmp/tif/writer-${System.currentTimeMillis}.tif"))
+        writer.write(image, Array.empty[GeneralParameterValue])
       }
       retval
     }, preservesPartitioning = true).collect

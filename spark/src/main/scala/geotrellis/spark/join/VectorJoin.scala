@@ -62,7 +62,7 @@ object VectorJoin {
 
     // For simplicity, assume that the right RDD has length ≥ that
     // of the left one.
-    val rtreeRdd: RDD[STRtree] = right.mapPartitions({ partition =>
+    val rtrees = right.mapPartitions({ partition =>
       val rtree = new STRtree
 
       partition.foreach({ r =>
@@ -73,6 +73,10 @@ object VectorJoin {
 
       Iterator(rtree)
     }, preservesPartitioning = true)
+      .zipWithIndex
+      .map({ case (v, k) => (k, v) })
+      .cache
+    val count = rtrees.count.toInt
 
     // For each item in the left RDD, find the list of items in the
     // right RDD that it intersects with.
@@ -81,15 +85,17 @@ object VectorJoin {
 
       // Find the list of items in the right RDD that this particular
       // item from the left RDD intersects with.
-      rtreeRdd.flatMap({ tree =>
+      (0 until count).flatMap({ i =>
+      // rtreeRdd.flatMap({ tree =>
+        val rtree = rtrees.lookup(i).head
         val envelope = new JtsEnvelope(xmin, xmax, ymin, ymax)
 
-        tree.query(envelope)
+        rtree.query(envelope)
           .asScala
           .map({ r: Any => r.asInstanceOf[R] })
           .filter({ r => pred(l, r) })
           .map({ r => (l, r) })
-      }).collect
+      })
     })
 
   }

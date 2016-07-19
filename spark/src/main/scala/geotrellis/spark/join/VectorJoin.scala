@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.{Envelope => JtsEnvelope}
 import com.vividsolutions.jts.index.strtree.STRtree
 import org.apache.spark._
 import org.apache.spark.rdd._
+import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 
 import scala.collection.JavaConverters._
@@ -58,7 +59,7 @@ object VectorJoin {
     left: RDD[L],
     right: RDD[R],
     pred: (Geometry, Geometry) => Boolean
-  ): RDD[(L, R)] = {
+  )(implicit sc: SparkContext): RDD[(L, R)] = {
 
     // For simplicity, assume that the right RDD has length ≥ that
     // of the left one.
@@ -78,19 +79,17 @@ object VectorJoin {
       .cache
     val count = rtrees.count.toInt
 
-    // For each item in the left RDD, find the list of items in the
-    // right RDD that it intersects with.
-    left.flatMap({ l =>
-      val Extent(xmin, ymin, xmax, ymax) = l.envelope
+    // For every partition of the right-hand collection of items, find
+    // an RDD of left-hand items that intersects with some member of
+    // that partition.
+    val rdds = (0 until count).map({ i =>
+      val tree = sc.broadcast(rtrees.lookup(i).head)
 
-      // Find the list of items in the right RDD that this particular
-      // item from the left RDD intersects with.
-      (0 until count).flatMap({ i =>
-      // rtreeRdd.flatMap({ tree =>
-        val rtree = rtrees.lookup(i).head
+      left.flatMap({ l =>
+        val Extent(xmin, ymin, xmax, ymax) = l.envelope
         val envelope = new JtsEnvelope(xmin, xmax, ymin, ymax)
 
-        rtree.query(envelope)
+        tree.value.query(envelope)
           .asScala
           .map({ r: Any => r.asInstanceOf[R] })
           .filter({ r => pred(l, r) })
@@ -98,6 +97,8 @@ object VectorJoin {
       })
     })
 
+    // Return the results as a single RDD
+    sc.union(rdds)
   }
 
 }

@@ -8,10 +8,11 @@ libraryDependencies ++= Seq(
   "org.apache.accumulo" % "accumulo-core" % Version.accumulo
     exclude("org.jboss.netty", "netty")
     exclude("org.apache.hadoop", "hadoop-client"),
-  "mil.nga.giat" % "geowave-adapter-raster" % "0.9.2-SNAPSHOT",
-  "mil.nga.giat" % "geowave-adapter-vector" % "0.9.2-SNAPSHOT",
-  "mil.nga.giat" % "geowave-core-store" % "0.9.2-SNAPSHOT",
-  "mil.nga.giat" % "geowave-datastore-accumulo" % "0.9.2-SNAPSHOT",
+  "mil.nga.giat" % "geowave-adapter-raster" % "0.9.2.1",
+  "mil.nga.giat" % "geowave-adapter-vector" % "0.9.2.1",
+  "mil.nga.giat" % "geowave-core-store" % "0.9.2.1",
+  "mil.nga.giat" % "geowave-core-geotime" % "0.9.2.1",
+  "mil.nga.giat" % "geowave-datastore-accumulo" % "0.9.2.1",
   "org.apache.hadoop" % "hadoop-client" % Version.hadoop % "provided",
   "org.apache.spark" %% "spark-core" % Version.spark % "provided",
   "org.geoserver" % "gs-wms" % "2.8.2",
@@ -26,7 +27,7 @@ libraryDependencies ++= Seq(
 resolvers ++= Seq(
   "boundless" at "https://repo.boundlessgeo.com/release",
   "geosolutions" at "http://maven.geo-solutions.it/",
-  "geowave" at "http://geowave-maven.s3-website-us-east-1.amazonaws.com/snapshot",
+  "LOCAL" at "file://" + Path.userHome.absolutePath + "/Desktop/repository",
   "osgeo" at "http://download.osgeo.org/webdav/geotools/"
 )
 

@@ -5,14 +5,16 @@ import sbtassembly.PathList
 name := "geotrellis-geowave"
 
 libraryDependencies ++= Seq(
+
+  "com.azavea.geotrellis" %% "geotrellis-accumulo" % "1.0.0-SNAPSHOT",
   "org.apache.accumulo" % "accumulo-core" % Version.accumulo
     exclude("org.jboss.netty", "netty")
     exclude("org.apache.hadoop", "hadoop-client"),
-  "mil.nga.giat" % "geowave-adapter-raster" % "0.9.2.1",
-  "mil.nga.giat" % "geowave-adapter-vector" % "0.9.2.1",
-  "mil.nga.giat" % "geowave-core-store" % "0.9.2.1",
-  "mil.nga.giat" % "geowave-core-geotime" % "0.9.2.1",
-  "mil.nga.giat" % "geowave-datastore-accumulo" % "0.9.2.1",
+  "mil.nga.giat" % "geowave-adapter-raster" % "0.9.3-SNAPSHOT",
+  "mil.nga.giat" % "geowave-adapter-vector" % "0.9.3-SNAPSHOT",
+  "mil.nga.giat" % "geowave-core-store" % "0.9.3-SNAPSHOT",
+  "mil.nga.giat" % "geowave-core-geotime" % "0.9.3-SNAPSHOT",
+  "mil.nga.giat" % "geowave-datastore-accumulo" % "0.9.3-SNAPSHOT",
   "org.apache.hadoop" % "hadoop-client" % Version.hadoop % "provided",
   "org.apache.spark" %% "spark-core" % Version.spark % "provided",
   "org.geoserver" % "gs-wms" % "2.8.2",
@@ -21,13 +23,15 @@ libraryDependencies ++= Seq(
   "org.geotools" % "gt-geotiff" % Version.geotools % "provided",
   "org.geotools" % "gt-main" % Version.geotools % "provided",
   "org.geotools" % "gt-referencing" % Version.geotools % "provided",
+  "com.jsuereth" %% "scala-arm" % "1.4",
   spire,
   scalatest % "test")
 
 resolvers ++= Seq(
   "boundless" at "https://repo.boundlessgeo.com/release",
   "geosolutions" at "http://maven.geo-solutions.it/",
-  "LOCAL" at "file://" + Path.userHome.absolutePath + "/Desktop/repository",
+  "geowave-release" at "http://geowave-maven.s3-website-us-east-1.amazonaws.com/release",
+  "geowave-snapshot" at "http://geowave-maven.s3-website-us-east-1.amazonaws.com/snapshot",
   "osgeo" at "http://download.osgeo.org/webdav/geotools/"
 )
 

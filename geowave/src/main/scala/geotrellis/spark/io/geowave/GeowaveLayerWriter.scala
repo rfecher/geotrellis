@@ -17,7 +17,6 @@ import com.typesafe.scalalogging.slf4j._
 import mil.nga.giat.geowave.adapter.raster.adapter.RasterDataAdapter
 import mil.nga.giat.geowave.core.geotime.ingest._
 import mil.nga.giat.geowave.core.store._
-import mil.nga.giat.geowave.core.store.memory.DataStoreUtils
 import mil.nga.giat.geowave.datastore.accumulo._
 import org.apache.spark.rdd.RDD
 import org.apache.spark.SparkContext
@@ -78,6 +77,7 @@ import geotrellis.spark.io.accumulo.AccumuloWriteStrategy
 import javax.imageio.ImageIO
 import java.io.File
 import java.util.UUID
+import mil.nga.giat.geowave.core.store.util.DataStoreUtils
 
 object GeowaveLayerWriter extends LazyLogging {
 
@@ -115,12 +115,9 @@ object GeowaveLayerWriter extends LazyLogging {
 
     val pluginOptions = new DataStorePluginOptions
     pluginOptions.setFactoryOptions(as.aro)
-    val configOptions = pluginOptions.getFactoryOptionsAsMap
+    val configOptions = pluginOptions.getOptionsAsMap
     val geotrellisKvToGeoWaveKv: Iterable[(K, V)] => Iterable[(Key, Value)] = p => {
       val gwMetadata = new java.util.HashMap[String, String](); gwMetadata.put("cellType", cellType)
-      configOptions.put(
-        GeoWaveStoreFinder.STORE_HINT_OPTION.getName(),
-        "accumulo")
       /* Produce mosaic from all of the tiles in this partition */
       val sources = new java.util.ArrayList[GridCoverage2D]
       p.map({ case kv => sources.add(geotrellisKvToGeotools(kv)); Unit }).toList

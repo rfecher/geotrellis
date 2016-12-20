@@ -93,11 +93,9 @@ class GeowaveLayerReader(val attributeStore: AttributeStore)(implicit sc: SparkC
   def computeConfiguration()(implicit sc: SparkContext) = {
     val pluginOptions = new DataStorePluginOptions
     pluginOptions.setFactoryOptions(requiredOptions)
-    val configOptions = pluginOptions.getFactoryOptionsAsMap
     val job = Job.getInstance(sc.hadoopConfiguration)
     val config = job.getConfiguration
-    GeoWaveInputFormat.setDataStoreName(config, "accumulo")
-    GeoWaveInputFormat.setStoreConfigOptions(config, configOptions)
+    GeoWaveInputFormat.setStoreOptions(config, pluginOptions)
 
     config
   }
